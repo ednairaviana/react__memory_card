@@ -1,0 +1,51 @@
+:root {
+  --neutral: #1f1926;
+  --neutral-light: #d1c9db;
+
+  --base: #382b47;
+  --base-semi-light: #4a3a5f;
+  --base-light: #5a4a73;
+
+  --primary: #7c3aed;
+  --primary-light: #c177ff;
+  --primary-dark: #4f0ec5;
+  --primary-hover: #9450ff;
+
+  --accent: #fceaff;
+  --accent-soft: #f3d9ff;
+
+  --danger: #ff3681;
+  --safe: #00a786;
+
+  --max-container-width: 1400px;
+  --section-padding-x: clamp(2rem, 5.556vw + 0.222rem, 8rem);
+  --section-padding-y: clamp(6rem, 3.704vw + 4.815rem, 10rem);
+
+  --h1: clamp(4rem, 0.926vw + 3.704rem, 5rem);
+  --h2: clamp(3rem, 0.926vw + 2.704rem, 4rem);
+  --h3: clamp(2.6rem, 0.556vw + 2.422rem, 3.2rem);
+  --h4: clamp(2.4rem, 0.37vw + 2.281rem, 2.8rem);
+  --h5: clamp(2.3rem, 0.278vw + 2.211rem, 2.6rem);
+
+  --text-xs: clamp(1.2rem, 0.185vw + 1.141rem, 1.4rem);
+  --text-s: clamp(1.4rem, 0.185vw + 1.341rem, 1.6rem);
+  --text-m: clamp(1.6rem, 0.37vw + 1.481rem, 2rem);
+  --text-l: clamp(2rem, 0.37vw + 1.881rem, 2.4rem);
+  --text-xl: clamp(2.4rem, 0.37vw + 2.281rem, 2.8rem);
+
+  --space-xs: clamp(1.4rem, 0.185vw + 1.341rem, 1.6rem);
+  --space-s: clamp(1.8rem, 0.185vw + 1.741rem, 2rem);
+  --space-m: clamp(2rem, 0.37vw + 1.881rem, 2.4rem);
+  --space-l: clamp(2.8rem, 0.185vw + 2.741rem, 3rem);
+  --space-xl: clamp(3.2rem, 0.37vw + 3.081rem, 3.6rem);
+}
+
+html {
+  font-size: 62.5%;
+  background-color: var(--neutral);
+  color: var(--accent);
+}
+
+body {
+  font-size: var(--text-m);
+}

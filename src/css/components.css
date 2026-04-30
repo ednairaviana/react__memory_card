@@ -1,0 +1,29 @@
+.main-section {
+  width: 100%;
+  padding: var(--section-padding-y) var(--section-padding-x);
+}
+
+.main-container {
+  width: 100%;
+  max-width: var(--max-container-width);
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: var(--text-m);
+  font-weight: 500;
+  cursor: pointer;
+
+  padding: 1rem var(--space-l);
+  border-radius: 5rem;
+
+  background-color: var(--primary);
+}
