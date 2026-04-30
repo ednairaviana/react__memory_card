@@ -1,0 +1,33 @@
+.cards_list {
+}
+
+.cards_list li {
+  display: grid;
+  grid-template-rows: 1fr auto;
+
+  height: 350px;
+  background-color: var(--base-semi-light);
+  border-radius: 1rem;
+  overflow: hidden;
+
+  border: 2px solid var(--neutral);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.cards_list li:hover {
+  border-color: #92ff24;
+}
+
+.cards_list li img {
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cards_list li h3 {
+  font-size: var(--text-l);
+  padding: var(--space-xs) var(--space-m);
+  text-align: center;
+  font-weight: 500;
+}
