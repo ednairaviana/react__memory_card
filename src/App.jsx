@@ -2,7 +2,23 @@ import { useEffect, useState } from "react";
 import Cards from "./components/Cards";
 
 function App() {
-  const [characters, setCharacters] = useState("");
+  const charcaterLimit = 8;
+  const [charactersList, setCharactersList] = useState("");
+  const [score, setScore] = useState("");
+  const [clickedCharList, setClickedCharsList] = useState([]);
+
+  function handleSetClickedCharList(characterId) {
+    const updatedList = [...clickedCharList, characterId];
+    const updatedScore = updatedList.length;
+    setClickedCharsList(updatedList);
+    setScore(updatedScore);
+
+    console.log(updatedScore, updatedList);
+  }
+
+  function handleSetCharactersList(list) {
+    setCharactersList(list.slice(0, charcaterLimit));
+  }
 
   useEffect(() => {
     fetchData();
@@ -13,7 +29,7 @@ function App() {
         const res = await fetch(search);
         const data = await res.json();
         console.log(data);
-        setCharacters(data.results);
+        handleSetCharactersList(data.results);
       } catch (error) {
         console.error(error);
       }
@@ -23,7 +39,10 @@ function App() {
   return (
     <section className="main-section">
       <div className="main-container">
-        <Cards characters={characters} />
+        <Cards
+          characters={charactersList}
+          handleSetClickedCharList={handleSetClickedCharList}
+        />
       </div>
     </section>
   );
