@@ -3,20 +3,20 @@
 
 .cards_list li {
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: 350px auto;
 
-  height: 350px;
   background-color: var(--base-semi-light);
   border-radius: 1rem;
   overflow: hidden;
 
-  border: 2px solid var(--neutral);
+  border: 1px solid var(--neutral);
   transition: all 0.2s;
   cursor: pointer;
 }
 
 .cards_list li:hover {
   border-color: #92ff24;
+  box-shadow: 0px 0px 10px #92ff24;
 }
 
 .cards_list li img {

@@ -1,6 +1,6 @@
 .main-section {
   width: 100%;
-  padding: var(--section-padding-y) var(--section-padding-x);
+  padding: var(--space-l) var(--space-l);
 }
 
 .main-container {
