@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import GameOver from "./components/GameOver";
 import Cards from "./components/Cards";
 
 function App() {
@@ -7,6 +8,12 @@ function App() {
   const [charactersList, setCharactersList] = useState("");
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
+
+  function resetGame() {
+    setIsGameOver(false);
+    setScore({ ...score, current: 0 });
+    setClickedCharsList([]);
+  }
 
   function handleSetClickedCharList(characterId) {
     if (clickedCharList.includes(characterId)) {
@@ -50,19 +57,21 @@ function App() {
   return (
     <section className="main-section">
       <div className="main-container">
-        <header>
-          <ul>
-            <li>Current Score: {score.current}</li>
-            <li>Best Score: {score.best}</li>
-          </ul>
-        </header>
         {isGameOver ? (
-          "you lost"
+          <GameOver score={score} resetGame={resetGame} />
         ) : (
-          <Cards
-            characters={charactersList}
-            handleSetClickedCharList={handleSetClickedCharList}
-          />
+          <>
+            <header>
+              <ul>
+                <li>Current Score: {score.current}</li>
+                <li>Best Score: {score.best}</li>
+              </ul>
+            </header>
+            <Cards
+              characters={charactersList}
+              handleSetClickedCharList={handleSetClickedCharList}
+            />
+          </>
         )}
       </div>
     </section>
