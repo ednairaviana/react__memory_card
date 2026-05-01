@@ -3,11 +3,18 @@ import Cards from "./components/Cards";
 
 function App() {
   const charcaterLimit = 8;
+  const [isGameOver, setIsGameOver] = useState(false);
   const [charactersList, setCharactersList] = useState("");
   const [score, setScore] = useState("");
   const [clickedCharList, setClickedCharsList] = useState([]);
 
   function handleSetClickedCharList(characterId) {
+    if (clickedCharList.includes(characterId)) {
+      setIsGameOver(true);
+      console.log("You lost");
+      return;
+    }
+
     const updatedList = [...clickedCharList, characterId];
     const updatedScore = updatedList.length;
     setClickedCharsList(updatedList);
@@ -39,10 +46,14 @@ function App() {
   return (
     <section className="main-section">
       <div className="main-container">
-        <Cards
-          characters={charactersList}
-          handleSetClickedCharList={handleSetClickedCharList}
-        />
+        {isGameOver ? (
+          "you lost"
+        ) : (
+          <Cards
+            characters={charactersList}
+            handleSetClickedCharList={handleSetClickedCharList}
+          />
+        )}
       </div>
     </section>
   );
