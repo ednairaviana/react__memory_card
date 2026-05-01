@@ -19,6 +19,10 @@
   box-shadow: 0px 0px 10px #92ff24;
 }
 
+.cards_list li:active {
+  transform: scale(0.95);
+}
+
 .cards_list li img {
   width: 100%;
   object-fit: cover;

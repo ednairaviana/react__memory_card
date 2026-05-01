@@ -5,7 +5,7 @@ function App() {
   const charcaterLimit = 8;
   const [isGameOver, setIsGameOver] = useState(false);
   const [charactersList, setCharactersList] = useState("");
-  const [score, setScore] = useState("");
+  const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
 
   function handleSetClickedCharList(characterId) {
@@ -16,7 +16,11 @@ function App() {
     }
 
     const updatedList = [...clickedCharList, characterId];
-    const updatedScore = updatedList.length;
+    const currentScore = updatedList.length;
+    const updatedScore =
+      score.best > currentScore
+        ? { ...score, current: currentScore }
+        : { current: currentScore, best: currentScore };
     setClickedCharsList(updatedList);
     setScore(updatedScore);
 
@@ -46,6 +50,12 @@ function App() {
   return (
     <section className="main-section">
       <div className="main-container">
+        <header>
+          <ul>
+            <li>Current Score: {score.current}</li>
+            <li>Best Score: {score.best}</li>
+          </ul>
+        </header>
         {isGameOver ? (
           "you lost"
         ) : (
