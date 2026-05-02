@@ -3,9 +3,9 @@ import GameOver from "./components/GameOver";
 import Cards from "./components/Cards";
 
 function App() {
-  const charcaterLimit = 8;
   const [isGameOver, setIsGameOver] = useState(false);
-  const [charactersList, setCharactersList] = useState("");
+  const [cachedCharacterList, setCachedCharacterList] = useState([]);
+  const [charactersList, setCharactersList] = useState([]);
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
 
@@ -13,6 +13,14 @@ function App() {
     setIsGameOver(false);
     setScore({ ...score, current: 0 });
     setClickedCharsList([]);
+  }
+
+  function shuffleCards() {
+    if (charactersList.length === 0) return;
+
+    const length = charactersList.length;
+
+    console.log(length);
   }
 
   function handleSetClickedCharList(characterId) {
@@ -30,26 +38,44 @@ function App() {
         : { current: currentScore, best: currentScore };
     setClickedCharsList(updatedList);
     setScore(updatedScore);
-
-    console.log(updatedScore, updatedList);
-  }
-
-  function handleSetCharactersList(list) {
-    setCharactersList(list.slice(0, charcaterLimit));
   }
 
   useEffect(() => {
-    fetchData();
+    let ignore = false;
+    if (ignore) return;
 
-    async function fetchData() {
+    handleSetCachedList();
+
+    return () => {
+      ignore = true;
+    };
+
+    async function handleSetCachedList() {
+      const ids = getIds();
+      const search = `https://rickandmortyapi.com/api/character/${ids}`;
+
       try {
-        const search = "https://rickandmortyapi.com/api/character";
         const res = await fetch(search);
         const data = await res.json();
         console.log(data);
-        handleSetCharactersList(data.results);
+
+        if (ignore) return;
+        setCachedCharacterList(data);
       } catch (error) {
-        console.error(error);
+        return error;
+      }
+
+      function getIds() {
+        const queryInfo = { count: 820, limit: 80 };
+        const ids = [];
+
+        for (let i = 0; i <= queryInfo.limit; i++) {
+          const min = 1;
+          const max = queryInfo.count;
+          ids.push(Math.floor(Math.random() * (max - min + 1)) + min);
+        }
+
+        return ids.join(",");
       }
     }
   }, []);
