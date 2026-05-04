@@ -69,7 +69,7 @@ function useMemoryCard() {
 
   useEffect(() => {
     let ignore = false;
-    if (ignore) return;
+    if (ignore && isGameOver) return;
 
     handleSetCachedList();
 
@@ -80,6 +80,7 @@ function useMemoryCard() {
     async function handleSetCachedList() {
       const ids = getIds({ count: 820, limit: 80 }).join(",");
       const search = `https://rickandmortyapi.com/api/character/${ids}`;
+      setCachedCharacterList("");
 
       try {
         const res = await fetch(search);
@@ -92,7 +93,7 @@ function useMemoryCard() {
         return error;
       }
     }
-  }, []);
+  }, [isGameOver]);
 
   return {
     isGameOver,
