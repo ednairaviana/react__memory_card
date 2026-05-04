@@ -4,10 +4,28 @@ import Cards from "./components/Cards";
 
 function App() {
   const [isGameOver, setIsGameOver] = useState(false);
-  const [cachedCharacterList, setCachedCharacterList] = useState([]);
-  const [charactersList, setCharactersList] = useState([]);
+  const [cachedCharacterList, setCachedCharacterList] = useState("");
+  const [charactersList, setCharactersList] = useState("");
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
+
+  function getIds(queryInfo) {
+    const ids = [];
+
+    for (let i = 0; i <= queryInfo.limit; i++) {
+      const min = 1;
+      const max = queryInfo.count;
+      let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      while (ids.includes(randomNumber)) {
+        randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      ids.push(randomNumber);
+    }
+
+    return ids;
+  }
 
   function resetGame() {
     setIsGameOver(false);
@@ -16,11 +34,21 @@ function App() {
   }
 
   function shuffleCards() {
-    if (charactersList.length === 0) return;
+    if (cachedCharacterList === "") return;
+    const randomIds = getIds({
+      count: cachedCharacterList.length - 1,
+      limit: 7,
+    });
+    const randomList = [];
 
-    const length = charactersList.length;
+    randomIds.forEach((id) => {
+      randomList.push(cachedCharacterList[id]);
+    });
 
-    console.log(length);
+    console.log(randomIds);
+    console.log(randomList);
+
+    return randomList;
   }
 
   function handleSetClickedCharList(characterId) {
@@ -51,7 +79,7 @@ function App() {
     };
 
     async function handleSetCachedList() {
-      const ids = getIds();
+      const ids = getIds({ count: 820, limit: 80 }).join(",");
       const search = `https://rickandmortyapi.com/api/character/${ids}`;
 
       try {
@@ -63,19 +91,6 @@ function App() {
         setCachedCharacterList(data);
       } catch (error) {
         return error;
-      }
-
-      function getIds() {
-        const queryInfo = { count: 820, limit: 80 };
-        const ids = [];
-
-        for (let i = 0; i <= queryInfo.limit; i++) {
-          const min = 1;
-          const max = queryInfo.count;
-          ids.push(Math.floor(Math.random() * (max - min + 1)) + min);
-        }
-
-        return ids.join(",");
       }
     }
   }, []);
@@ -94,7 +109,7 @@ function App() {
               </ul>
             </header>
             <Cards
-              characters={charactersList}
+              characters={shuffleCards()}
               handleSetClickedCharList={handleSetClickedCharList}
             />
           </>

@@ -4,12 +4,12 @@ function Cards({ characters, handleSetClickedCharList }) {
   return (
     <ul className="cards_list grid grid-cols-4 gap-4 w-full">
       {characters
-        ? characters.map((character) => (
+        ? characters.map((character, index) => (
             <li
               onClick={() => {
                 handleSetClickedCharList(character.id);
               }}
-              key={character.id}
+              key={index}
             >
               <img
                 className="card"
