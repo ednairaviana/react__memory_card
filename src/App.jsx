@@ -5,7 +5,6 @@ import Cards from "./components/Cards";
 function App() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [cachedCharacterList, setCachedCharacterList] = useState("");
-  const [charactersList, setCharactersList] = useState("");
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
 
@@ -47,6 +46,8 @@ function App() {
 
     console.log(randomIds);
     console.log(randomList);
+
+    console.log(clickedCharList);
 
     return randomList;
   }
@@ -99,7 +100,12 @@ function App() {
     <section className="main-section">
       <div className="main-container">
         {isGameOver ? (
-          <GameOver score={score} resetGame={resetGame} />
+          <GameOver
+            score={score}
+            resetGame={resetGame}
+            allCards={cachedCharacterList}
+            clickedCards={clickedCharList}
+          />
         ) : (
           <>
             <header>
@@ -111,6 +117,7 @@ function App() {
             <Cards
               characters={shuffleCards()}
               handleSetClickedCharList={handleSetClickedCharList}
+              isClickable={true}
             />
           </>
         )}

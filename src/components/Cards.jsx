@@ -1,13 +1,17 @@
 import "../css/cards.css";
 
-function Cards({ characters, handleSetClickedCharList }) {
+function Cards({ characters, handleSetClickedCharList, isClickable }) {
   return (
-    <ul className="cards_list grid grid-cols-4 gap-4 w-full">
+    <ul
+      className={`cards_list gap-4 w-full ${!isClickable ? "not-clickable" : ""}`}
+    >
       {characters
         ? characters.map((character, index) => (
             <li
               onClick={() => {
-                handleSetClickedCharList(character.id);
+                if (isClickable) {
+                  handleSetClickedCharList(character);
+                }
               }}
               key={index}
             >
@@ -19,7 +23,7 @@ function Cards({ characters, handleSetClickedCharList }) {
               <h3>{character.name}</h3>
             </li>
           ))
-        : ""}
+        : "Loading"}
     </ul>
   );
 }
