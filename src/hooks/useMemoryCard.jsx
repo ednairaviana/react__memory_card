@@ -6,12 +6,10 @@ function useMemoryCard() {
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
 
-  function getIds(queryInfo) {
+  function getIds(min = 1, max = 820, limit = 80) {
     const ids = [];
 
-    for (let i = 0; i <= queryInfo.limit; i++) {
-      const min = 1;
-      const max = queryInfo.count;
+    for (let i = 0; i < limit; i++) {
       let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
       while (ids.includes(randomNumber)) {
@@ -32,37 +30,66 @@ function useMemoryCard() {
 
   function shuffleCards() {
     if (cachedCharacterList === "") return;
-    const randomIds = getIds({
-      count: cachedCharacterList.length - 1,
-      limit: 7,
-    });
-    const randomList = [];
+    const maxCardsDisplay = 8;
+    const clickedCards = getClickedCards();
+    const cachedCards = getRandomCards(
+      maxCardsDisplay - clickedCards.length,
+      cachedCharacterList,
+    );
 
-    randomIds.forEach((id) => {
-      randomList.push(cachedCharacterList[id]);
-    });
+    const mergedCards = mergeRandom(clickedCards, cachedCards);
 
-    console.log(randomIds);
-    console.log(randomList);
+    return mergedCards;
 
-    console.log(clickedCharList);
+    function mergeRandom(arr1, arr2) {
+      const merged = [...arr1, ...arr2];
 
-    return randomList;
+      for (let i = merged.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [merged[i], merged[j]] = [merged[j], merged[i]];
+      }
+
+      return merged;
+    }
+
+    function getRandomCards(limit, array) {
+      if (array === "") return;
+      const randomIds = getIds(0, array.length - 1, limit);
+      const randomCards = [];
+
+      randomIds.forEach((id) => {
+        randomCards.push(array[id]);
+      });
+
+      return randomCards;
+    }
+
+    function getClickedCards() {
+      if (clickedCharList.length === 0) return [];
+      const maxLimit = clickedCharList.length < 8 ? clickedCharList.length : 7;
+      const randomLimit = Math.floor(Math.random() * (maxLimit - 0));
+
+      if (randomLimit === 0) return [];
+      return getRandomCards(randomLimit, clickedCharList);
+    }
   }
 
-  function handleSetClickedCharList(characterId) {
-    if (clickedCharList.includes(characterId)) {
+  function handleSetClickedCharList(character) {
+    if (clickedCharList.includes(character)) {
       setIsGameOver(true);
-      console.log("You lost");
       return;
     }
 
-    const updatedList = [...clickedCharList, characterId];
+    const updatedList = [...clickedCharList, character];
     const currentScore = updatedList.length;
     const updatedScore =
       score.best > currentScore
         ? { ...score, current: currentScore }
         : { current: currentScore, best: currentScore };
+
+    setCachedCharacterList(
+      cachedCharacterList.filter((char) => char.id !== character.id),
+    );
     setClickedCharsList(updatedList);
     setScore(updatedScore);
   }
@@ -78,7 +105,7 @@ function useMemoryCard() {
     };
 
     async function handleSetCachedList() {
-      const ids = getIds({ count: 820, limit: 80 }).join(",");
+      const ids = getIds().join(",");
       const search = `https://rickandmortyapi.com/api/character/${ids}`;
       setCachedCharacterList("");
 
