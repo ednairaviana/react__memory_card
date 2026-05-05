@@ -1,14 +1,15 @@
 .cards_list {
+  --grid-repeat: 4;
   --img-h: 280px;
   --title-size: var(--text-l);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(var(--grid-repeat), 1fr);
 }
 
 .cards_list.not-clickable {
+  --grid-repeat: 8;
   --img-h: 180px;
   --title-size: var(--text-m);
-  grid-template-columns: repeat(8, 1fr);
 }
 
 .cards_list li {
@@ -48,4 +49,30 @@
   padding: var(--space-xs) var(--space-m);
   text-align: center;
   font-weight: 500;
+}
+
+@media (max-width: 980px) {
+  .cards_list {
+    --grid-repeat: 2;
+  }
+
+  .cards_list.not-clickable {
+    --grid-repeat: 5;
+  }
+}
+
+@media (max-width: 700px) {
+  .cards_list.not-clickable {
+    --grid-repeat: 3;
+  }
+}
+
+@media (max-width: 450px) {
+  .cards_list {
+    --grid-repeat: 1;
+  }
+
+  .cards_list.not-clickable {
+    --grid-repeat: 2;
+  }
 }
