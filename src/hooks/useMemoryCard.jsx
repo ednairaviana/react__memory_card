@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 
 function useMemoryCard() {
+  const [fetchNewCards, setFetchNewCards] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [cachedCharacterList, setCachedCharacterList] = useState("");
+  const [cachedCharacterList, setCachedCharacterList] = useState([]);
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
 
-  function getIds(min = 1, max = 820, limit = 80) {
+  function getIds(min = 1, max = 820, limit = 16) {
     const ids = [];
 
     for (let i = 0; i < limit; i++) {
@@ -26,18 +27,17 @@ function useMemoryCard() {
     setIsGameOver(false);
     setScore({ ...score, current: 0 });
     setClickedCharsList([]);
+    setFetchNewCards(true);
   }
 
   function shuffleCards() {
-    if (cachedCharacterList === "") return;
+    if (cachedCharacterList.length === 0) return;
     const maxCardsDisplay = 8;
     const clickedCards = getClickedCards();
-    const cachedCards = getRandomCards(
-      maxCardsDisplay - clickedCards.length,
-      cachedCharacterList,
-    );
-
+    const cachedCards = getCachedCards();
     const mergedCards = mergeRandom(clickedCards, cachedCards);
+
+    console.log(cachedCharacterList);
 
     return mergedCards;
 
@@ -52,8 +52,18 @@ function useMemoryCard() {
       return merged;
     }
 
+    function getCachedCards() {
+      if (cachedCharacterList.length === 0) return;
+      const maxLimit =
+        maxCardsDisplay - clickedCards.length < cachedCharacterList.length
+          ? maxCardsDisplay - clickedCards.length
+          : cachedCharacterList.length;
+
+      return getRandomCards(maxLimit, cachedCharacterList);
+    }
+
     function getRandomCards(limit, array) {
-      if (array === "") return;
+      if (array.length === 0) return;
       const randomIds = getIds(0, array.length - 1, limit);
       const randomCards = [];
 
@@ -66,10 +76,14 @@ function useMemoryCard() {
 
     function getClickedCards() {
       if (clickedCharList.length === 0) return [];
+      const minLimit =
+        cachedCharacterList.length < maxCardsDisplay
+          ? maxCardsDisplay - cachedCharacterList.length
+          : 0;
       const maxLimit = clickedCharList.length < 8 ? clickedCharList.length : 7;
-      const randomLimit = Math.floor(Math.random() * (maxLimit - 0));
+      const randomLimit =
+        Math.floor(Math.random() * (maxLimit - minLimit + 1)) + minLimit;
 
-      if (randomLimit === 0) return [];
       return getRandomCards(randomLimit, clickedCharList);
     }
   }
@@ -80,7 +94,10 @@ function useMemoryCard() {
       return;
     }
 
-    const updatedList = [...clickedCharList, character];
+    const updatedList = [
+      ...clickedCharList,
+      { ...character, wasClicked: true },
+    ];
     const currentScore = updatedList.length;
     const updatedScore =
       score.best > currentScore
@@ -96,7 +113,7 @@ function useMemoryCard() {
 
   useEffect(() => {
     let ignore = false;
-    if (ignore && isGameOver) return;
+    if (!fetchNewCards) return;
 
     handleSetCachedList();
 
@@ -107,7 +124,7 @@ function useMemoryCard() {
     async function handleSetCachedList() {
       const ids = getIds().join(",");
       const search = `https://rickandmortyapi.com/api/character/${ids}`;
-      setCachedCharacterList("");
+      setCachedCharacterList([]);
 
       try {
         const res = await fetch(search);
@@ -116,11 +133,12 @@ function useMemoryCard() {
 
         if (ignore) return;
         setCachedCharacterList(data);
+        setFetchNewCards(false);
       } catch (error) {
         return error;
       }
     }
-  }, [isGameOver]);
+  }, [fetchNewCards]);
 
   return {
     isGameOver,
