@@ -8,7 +8,7 @@ function useMemoryCard() {
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
 
-  function getIds(min = 1, max = 820, limit = 8) {
+  function getIds(min = 1, max = 820, limit = 64) {
     const ids = [];
 
     for (let i = 0; i < limit; i++) {
@@ -26,6 +26,7 @@ function useMemoryCard() {
 
   function resetGame() {
     setGameStatus(null);
+    setFetchStatus(null);
     setScore({ ...score, current: 0 });
     setClickedCharsList([]);
     setFetchNewCards(true);
@@ -37,8 +38,6 @@ function useMemoryCard() {
     const clickedCards = getClickedCards();
     const cachedCards = getCachedCards();
     const mergedCards = mergeRandom(clickedCards, cachedCards);
-
-    console.log(cachedCharacterList);
 
     return mergedCards;
 
@@ -135,7 +134,6 @@ function useMemoryCard() {
       try {
         const res = await fetch(search);
         const data = await res.json();
-        console.log(data);
 
         if (ignore) return;
         setFetchStatus("success");
