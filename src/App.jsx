@@ -29,7 +29,7 @@ function App() {
         ) : (
           <>
             <header>
-              <ul>
+              <ul className="flex gap-4 justify-between">
                 <li>Current Score: {score.current}</li>
                 <li>Best Score: {score.best}</li>
               </ul>

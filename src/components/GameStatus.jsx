@@ -10,19 +10,24 @@ function GameStatus({
 }) {
   return (
     <div>
-      <div>{status === "over" ? "Game Over" : "Game Win"}</div>
-      <div>Your Score: {score.current}</div>
-      <div>Show list of clicked cards</div>
+      <div className="flex flex-col gap-5 justify-center items-center mb-15">
+        <h1 className="text-center">
+          {status === "over" ? "Game Over" : "Game Win"}
+        </h1>
+        <span className="mt-8">Your Score: {score.current}</span>
+        <button className="button" onClick={resetGame}>
+          Reset Game
+        </button>
+      </div>
 
       <div>
-        <h2>All CLicked Cards</h2>
+        <h2 className="subt">All CLicked Cards</h2>
         <Cards characters={clickedCards} isClickable={false} />
       </div>
-      <button onClick={resetGame}>Reset Game</button>
 
       {notClickedCards.length !== 0 ? (
         <div>
-          <h2>Missing Cards</h2>
+          <h2 className="subt">Missing Cards</h2>
           <Cards characters={notClickedCards} isClickable={false} />
         </div>
       ) : (
