@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 
 function useMemoryCard() {
   const [fetchNewCards, setFetchNewCards] = useState(true);
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [gameStatus, setGameStatus] = useState(null);
   const [cachedCharacterList, setCachedCharacterList] = useState([]);
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCharList, setClickedCharsList] = useState([]);
 
-  function getIds(min = 1, max = 820, limit = 16) {
+  function getIds(min = 1, max = 820, limit = 8) {
     const ids = [];
 
     for (let i = 0; i < limit; i++) {
@@ -24,7 +24,7 @@ function useMemoryCard() {
   }
 
   function resetGame() {
-    setIsGameOver(false);
+    setGameStatus(null);
     setScore({ ...score, current: 0 });
     setClickedCharsList([]);
     setFetchNewCards(true);
@@ -90,8 +90,12 @@ function useMemoryCard() {
 
   function handleSetClickedCharList(character) {
     if (clickedCharList.includes(character)) {
-      setIsGameOver(true);
+      setGameStatus("over");
       return;
+    }
+
+    if (cachedCharacterList.length === 1) {
+      setGameStatus("win");
     }
 
     const updatedList = [
@@ -141,7 +145,7 @@ function useMemoryCard() {
   }, [fetchNewCards]);
 
   return {
-    isGameOver,
+    gameStatus,
     score,
     cachedCharacterList,
     clickedCharList,

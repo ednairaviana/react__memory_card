@@ -1,10 +1,10 @@
 import useMemoryCard from "./hooks/useMemoryCard";
-import GameOver from "./components/GameOver";
+import GameStatus from "./components/GameStatus";
 import Cards from "./components/Cards";
 
 function App() {
   const {
-    isGameOver,
+    gameStatus,
     score,
     cachedCharacterList,
     clickedCharList,
@@ -13,15 +13,18 @@ function App() {
     handleSetClickedCharList,
   } = useMemoryCard();
 
+  console.log(gameStatus);
+
   return (
     <section className="main-section">
       <div className="main-container">
-        {isGameOver ? (
-          <GameOver
+        {gameStatus !== null ? (
+          <GameStatus
             score={score}
             resetGame={resetGame}
-            allCards={cachedCharacterList}
             clickedCards={clickedCharList}
+            notClickedCards={cachedCharacterList}
+            status={gameStatus}
           />
         ) : (
           <>
