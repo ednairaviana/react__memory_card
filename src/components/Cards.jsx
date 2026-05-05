@@ -24,7 +24,7 @@ function Cards({ characters, handleSetClickedCharList, isClickable }) {
               <h3>{character.name}</h3>
             </li>
           ))
-        : "Loading"}
+        : ""}
     </ul>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 function useMemoryCard() {
+  const [fetchStatus, setFetchStatus] = useState("loading");
   const [fetchNewCards, setFetchNewCards] = useState(true);
   const [gameStatus, setGameStatus] = useState(null);
   const [cachedCharacterList, setCachedCharacterList] = useState([]);
@@ -129,6 +130,7 @@ function useMemoryCard() {
       const ids = getIds().join(",");
       const search = `https://rickandmortyapi.com/api/character/${ids}`;
       setCachedCharacterList([]);
+      setFetchStatus("loading");
 
       try {
         const res = await fetch(search);
@@ -136,15 +138,18 @@ function useMemoryCard() {
         console.log(data);
 
         if (ignore) return;
+        setFetchStatus("success");
         setCachedCharacterList(data);
         setFetchNewCards(false);
       } catch (error) {
-        return error;
+        setFetchStatus("error");
+        console.log(error);
       }
     }
   }, [fetchNewCards]);
 
   return {
+    fetchStatus,
     gameStatus,
     score,
     cachedCharacterList,
