@@ -8,7 +8,6 @@ function Cards({ characters, handleSetClickedCharList, isClickable }) {
       {characters
         ? characters.map((character, index) => (
             <li
-              style={character.wasClicked && { color: "green" }}
               onClick={() => {
                 if (isClickable) {
                   handleSetClickedCharList(character);
