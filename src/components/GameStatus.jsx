@@ -20,7 +20,7 @@ function GameStatus({
         </button>
       </div>
 
-      <div>
+      <div className="mb-15">
         <h2 className="subt">All CLicked Cards</h2>
         <Cards characters={clickedCards} isClickable={false} />
       </div>
