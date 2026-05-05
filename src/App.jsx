@@ -15,8 +15,6 @@ function App() {
     handleSetClickedCharList,
   } = useMemoryCard();
 
-  console.log(gameStatus);
-
   if (fetchStatus !== "success") {
     return (
       <section className="main-section">
@@ -40,6 +38,14 @@ function App() {
           ) : (
             <>
               <header>
+                <div className="mb-15">
+                  <h1>Memory Card</h1>
+                  <p>
+                    The goal of the game is to click on all the cards without
+                    clicking on any of them twice
+                  </p>
+                </div>
+
                 <ul className="flex gap-4 justify-between">
                   <li>Current Score: {score.current}</li>
                   <li>Best Score: {score.best}</li>
